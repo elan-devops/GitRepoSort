@@ -1,4 +1,4 @@
-#/usr/bin/bash python
+#!/usr/bin/env python
 
 '''
 This is for Adobe Internal Use
@@ -84,16 +84,22 @@ if __name__ == '__main__':
     parser.add_argument('-url', '--url', 
                         help='Enter Git repo url to sort on the Updated/ Created/ Pushed date of your choice', nargs='?',
                         default='https://api.github.com/orgs/adobe/repos', const=1)
+    parser.add_argument('-sortby', '--sortby',
+                    const=1, default='updated_at', nargs='?',
+                    choices=['updated_at', 'pushed_at', 'created_at'],
+                    help='Please choose one of the above to sort by')
 
     args = parser.parse_args()
     url = args.url
+    sortby = args.sortby
+    print("sortby", sortby)
 
     '''
     getUrl - Return JSON data of the URL
     sortByDate - Sort the result based on the string to sort - this can be improvised
     '''
     responseUrlJson = getUrl(url)
-    sortedList = sortByDate(responseUrlJson, 'updated_at')
+    sortedList = sortByDate(responseUrlJson, sortby)
     dictToTable(sortedList)
 
 
